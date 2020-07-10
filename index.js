@@ -9,7 +9,7 @@ app.listen(port, () => {
   console.log(`server is listening to port ${port}`);
 });
 app.get("/staff", (req, res) => {
-  console.log(" created");
+  console.log(" create");
   res.json(staff);
 });
 app.post("/staffDetails", (req, res) => {
