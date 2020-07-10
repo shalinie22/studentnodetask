@@ -1,0 +1,13 @@
+https://nodeputdelete.herokuapp.com
+
+post : studentdetails
+
+get: studentdetails
+
+post: staffdetails
+
+get: allstaff
+
+put: studentdetails
+
+delete:studentdetails
