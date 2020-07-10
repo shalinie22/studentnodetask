@@ -9,25 +9,24 @@ app.listen(port, () => {
   console.log(`server is listening to port ${port}`);
 });
 app.get("/staff", (req, res) => {
-  console.log("staff data is created");
+  console.log(" created");
   res.json(staff);
 });
 app.post("/staffDetails", (req, res) => {
   staff.push(req.body);
   console.log(staff);
   res.json({
-    message: "staff-details are created",
+    message: "created",
   });
 });
 app.get("/student", (req, res) => {
   student.push(req.body);
-  console.log("students data is created");
-  console.log(student);
+ 
   res.json(student);
 });
 app.post("/studentDetails", (req, res) => {
   student.push(req.body);
-  res.json({ message: "students-details are created" });
+  res.json({ message: " created" });
 });
 
 app.put("/api/staff/:id", (req, res) => {
@@ -35,34 +34,33 @@ app.put("/api/staff/:id", (req, res) => {
 
   console.log(Id);
   let c = 0;
-  let s1 = staff.find((value, index) => {
+  let a = staff.find((value, index) => {
     return value.id == Id;
   });
-  let s2 = student.reduce((acc, cur) => {
+  let b = student.reduce((acc, cur) => {
     if (cur.staffId == Id) {
       acc = acc + 1;
     }
     return acc;
   }, 0);
-  s1.studentCount = s2;
+  a.studentCount = b;
   res.json({
-    message: "id created",
+    message: " created",
   });
 });
 
 app.delete("/api/student/:id", (req, res) => {
   let studentId = req.params.id;
-  console.log(studentId);
+  
 
-  let s = student.filter((s) => {
+  let stu = student.filter((s) => {
     return s.id == studentId;
   })[0];
 
-  const index = student.indexOf(s);
+  const index = student.indexOf(stu);
 
   student.splice(index, 1);
-  console.log(student);
-
-  res.json({ message: `User ${studentId} deleted.` });
+ 
+  res.json({ message: `deleted.` });
 });
 
