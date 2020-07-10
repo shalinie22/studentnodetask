@@ -61,7 +61,7 @@ app.delete("/api/student/:id", (req, res) => {
 
   student.splice(index, 1);
  
-  res.json({ message: `deleted.` });
+ 
   res.send(student)
 });
 
