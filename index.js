@@ -34,6 +34,19 @@ app.get("/allstaff", (req, res) => {
   res.json(staffdet);
 });
 
+app.put("/studentdetails/:id", (req, res) => {
+  console.log(req.params.id);
+  studentdetails.forEach((a) => {
+    if (a.id == req.params.id) {
+      a.name = req.body.name;
+      res.send({
+        message: "okkk",
+      });
+    }
+  });
+});
+
+
 app.delete("/studentdetails/:id", (req, res) => {
  const id=req.params.id
   let filterVal = studentdetails.filter((a) => {
