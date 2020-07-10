@@ -51,17 +51,14 @@ app.put("/api/staff/:id", (req, res) => {
 
 app.delete("/api/student/:id", (req, res) => {
   let studentId = req.params.id;
-  
+  console.log(studentId);
 
-  let stu = student.filter((s) => {
-    return s.id == studentId;
+  let result = student.filter((val) => {
+    if (val.id !== Id) return val;
   })[0];
-
-  const index = student.indexOf(stu);
-
-  student.splice(index, 1);
- 
- 
-  res.send(student)
+  //console.log(result);
+  student = result;
+  console.log(student);
+  res.json({ message: `User ${studentId} deleted.` });
 });
 
