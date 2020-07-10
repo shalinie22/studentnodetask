@@ -1,104 +1,63 @@
-const http = require("http");
 const express = require("express");
-const app = express();
 const bodyparser = require("body-parser");
-const port = 4000;
+const app = express();
+const port = 3000;
+
 app.use(bodyparser.json());
-let studentDetails = [];
-let staffDetails = [];
-app.post("/studentCreation", (req, res) => {
-studentDetails.push(req.body);
+let staffData = [];
+let stuData = [];
 
-  res.json({ message: "student created" });
+app.post("/stuData", (req, res) => {
+  stuData.push(req.body);
+  res.json({ message: "studentCreation created successfully!" });
 });
-app.post("/staffCreation", (req, res) => {
- 
-  staffDetails.push(req.body);
- res.json({ message: "staff created" });
+
+app.get("/stuData", (req, res) => {
+  res.send(stuData);
 });
-app.get("/allStaff", (req, res) => {
-  for(let i=0;i<staffDetails.length;i++){
-    let count=0;
-    for(let j=0;j<studentDetails.length;j++){
-      if(staffDetails[i].id===studentDetails[j].staff_id){
-        count+=1;
-      }
+
+app.post("/staffData", (req, res) => {
+  staffData.push(req.body);
+  res.json({ message: "staffCreation created successfully!" });
+});
+
+app.get("/allstaff", (req, res) => {
+  let staf = staffData.map((data) => {
+    let count = stuData.filter((item) => item.staffid === data.id);
+    return {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      stuCount: count.length,
+    };
+  });
+  res.json(staf);
+});
+
+app.put("/stuData/:id", (req, res) => {
+  console.log(req.params.id);
+  stuData.forEach((ele) => {
+    if (ele.id == req.params.id) {
+      ele.name = req.body.name;
+      res.status(200).send({
+        message: "updated",
+      });
     }
-    staffDetails[i].student_count=count;
-  }
-  let staff= staffDetails.map((data) => {
-    return {
-     id:data.id,
-     name:data.name,
-     email:data.email,
-     student_count:data.student_count
-    };
   });
-  res.json(staff);
-});
-app.get("/allStudents", (req, res) => {
-  let students = studentDetails.map((data) => {
-    return {
-      id:data.id,
-      name:data.name,
-      staff_id:data.staff_id
-    };
-  });
-  res.json(students);
 });
 
-app.put("/editStudent/:id",(req,res)=>{
-studentDetails.forEach((elem)=>{
-  if(elem.id == req.params.id){
-    elem.name = req.body.name;
-    res.status(200).send({
-      message:"User Updated..!"
-    })
-  }
- 
-})
-res.send("student name is edited")
-});
-
-app.delete("/deleteStudent/:id",(req,res)=>{
- let filterval=studentDetails.filter((val)=>{
-    if(val.id == req.params.id){
-      return val
+app.delete("/stuData/:id", (req, res) => {
+  console.log(req.params.id);
+  let filterVal = stuData.filter((ele) => {
+    if (ele.id == req.params.id) {
+      return ele;
     }
   })[0];
-  let index =studentDetails.indexOf(filterval);
-  studentDetails.splice(index,1);
-  res.json({"message":"student deleted"})
-})
-app.listen(process.env.PORT || port, () => {
-  console.log(`the server is listening ${port}`);
+  let index = stuData.indexOf(filterVal);
+  stuData.splice(index, 1);
+  res.send(stuData);
 });
 
-/* post staff
- {
-        "id": 1,
-        "name": "Jack",
-        "email": "ahgdfydg@gmail.com"
-    },
-    {
-        "id": 2,
-        "name": "loss",
-        "email": "ahgdfydg@gmail.com"
-    }*/
-
-/*post student
-{
-        "id": 1,
-        "name": "David",
-        "staff_id": 1
-    },
-    {
-        "id": 2,
-        "name": "Dari",
-        "staff_id": 1
-    },
-    {
-        "id": 3,
-        "name": "hals",
-        "staff_id": 2
-    }*/
+app.listen(process.env.PORT || port, () => {
+  console.log(`server is listening ${port}`);
+});
