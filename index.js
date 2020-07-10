@@ -1,68 +1,68 @@
 const express = require("express");
 const app = express();
-const bodyparser = require("body-parser");
-app.use(bodyparser.json());
+const body = require("body-parser");
+app.use(body.json());
 const port = process.env.PORT || 3000;
-let student_details = [];
-let staff_details = [];
+let student = [];
+let staff = [];
 app.listen(port, () => {
-  console.log("hello", port);
+  console.log(`server is listening to port ${port}`);
 });
-app.get("/staffget", (req, res) => {
+app.get("/staff", (req, res) => {
   console.log("staff data is created");
-  res.json(staff_details);
+  res.json(staff);
 });
-app.post("/staff", (req, res) => {
-  staff_details.push(req.body);
-  console.log(staff_details);
+app.post("/staffDetails", (req, res) => {
+  staff.push(req.body);
+  console.log(staff);
   res.json({
     message: "staff-details are created",
   });
 });
-app.get("/studentget", (req, res) => {
-  student_details.push(req.body);
+app.get("/student", (req, res) => {
+  student.push(req.body);
   console.log("students data is created");
-  console.log(student_details);
-  res.json(student_details);
+  console.log(student);
+  res.json(student);
 });
-app.post("/student", (req, res) => {
-  student_details.push(req.body);
+app.post("/studentDetails", (req, res) => {
+  student.push(req.body);
   res.json({ message: "students-details are created" });
 });
 
 app.put("/api/staff/:id", (req, res) => {
-  let staffId = req.params.id;
+  let Id = req.params.id;
 
-  console.log(staffId);
+  console.log(Id);
   let c = 0;
-  let a = staff_details.find((value, index) => {
-    return value.id == staffId;
+  let s1 = staff.find((value, index) => {
+    return value.id == Id;
   });
-  let b = student_details.reduce((acc, cur) => {
-    if (cur.staffId == staffId) {
+  let s2 = student.reduce((acc, cur) => {
+    if (cur.staffId == Id) {
       acc = acc + 1;
     }
     return acc;
-  });
-  a.studentCount = b;
+  }, 0);
+  s1.studentCount = s2;
   res.json({
     message: "id created",
   });
 });
 
 app.delete("/api/student/:id", (req, res) => {
-  let studentsId = req.params.id;
-  console.log(studentsId);
+  let studentId = req.params.id;
+  console.log(studentId);
 
-  let todeletestudent = student_details.filter((student) => {
-    return student.id == studentsId;
+  let s = student.filter((s) => {
+    return s.id == studentId;
   })[0];
 
-  const index = student.indexOf(todeletestudent);
+  const index = student.indexOf(s);
 
-  student_details.splice(index, 1);
-  console.log(student_details);
+  student.splice(index, 1);
+  console.log(student);
 
-  res.json({ message: `User ${studentsId} deleted.` });
+  res.json({ message: `User ${studentId} deleted.` });
 });
 
